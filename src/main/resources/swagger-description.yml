@@ -30,6 +30,10 @@ paths:
                 $ref: '#/components/schemas/OfferDTO'
         '400':
           description: Invalid request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDTO'
 
     get:
       operationId: getAllOffers
@@ -80,6 +84,10 @@ paths:
                 $ref: '#/components/schemas/OfferDTO'
         '404':
           description: Offer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDTO'
 
     delete:
       operationId: deleteOfferById
@@ -99,6 +107,10 @@ paths:
           description: Offer deleted successfully
         '404':
           description: Offer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseDTO'
 
 components:
   schemas:
@@ -106,7 +118,6 @@ components:
       type: object
       description: An Offer represents a promotional price or discount available for a specific product within a defined time period
       required:
-        - offerId
         - brandId
         - startDate
         - endDate
@@ -136,6 +147,7 @@ components:
         productPartNumber:
           type: string
           description: Unique identifier for the product associated with the offer
+          maxLength: 9
           example: '000100233'
         priority:
           type: integer
@@ -149,4 +161,17 @@ components:
         currencyIso:
           type: string
           description: ISO currency code for the price of the offer
+          maxLength: 3
           example: 'EUR'
+    ErrorResponseDTO:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: HTTP status code
+        message:
+          type: string
+          description: HTTP status message
+        detail:
+          type: string
+          description: Detail error message
