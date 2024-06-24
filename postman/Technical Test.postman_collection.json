@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "55319e64-f21c-4e4b-a2ac-517a3239c375",
+		"_postman_id": "0ca9331b-7d10-43e2-a114-990640a2e5b3",
 		"name": "Technical Test",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "3782299"
@@ -68,7 +68,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    //\"offerId\": 1,\r\n    \"brandId\": 1,\r\n    \"startDate\": \"2020-06-14T00.00.00Z\",\r\n    \"endDate\": \"2020-12-31T23.59.59Z\",\r\n    \"priceListId\": 1,\r\n    \"productPartNumber\": \"000100233\",\r\n    \"priority\": 0,\r\n    \"price\": 35.50,\r\n    \"currencyIso\": \"EUR\"\r\n}",
+					"raw": "{\r\n    \"brandId\": 1,\r\n    \"startDate\": \"2020-06-14T00.00.00Z\",\r\n    \"endDate\": \"2020-12-31T23.59.59Z\",\r\n    \"priceListId\": 1,\r\n    \"productPartNumber\": \"000100233\",\r\n    \"priority\": 0,\r\n    \"price\": 35.50,\r\n    \"currencyIso\": \"EUR\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -135,6 +135,41 @@
 					"port": "8080",
 					"path": [
 						"offer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update an offer by ID",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"brandId\": 1,\r\n    \"startDate\": \"2020-07-02T00.00.00Z\",\r\n    \"endDate\": \"2020-12-31T23.59.59Z\",\r\n    \"priceListId\": 1,\r\n    \"productPartNumber\": \"000110244\",\r\n    \"priority\": 1,\r\n    \"price\": 40.00,\r\n    \"currencyIso\": \"USD\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/offer/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"offer",
+						"1"
 					]
 				}
 			},
