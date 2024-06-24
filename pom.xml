@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<name>Technical-Test-JRamos</name>
 
-	<groupId>com.inditex.hiring</groupId>
+	<groupId>com.kairosds</groupId>
 	<artifactId>technical-test</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
