@@ -20,7 +20,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OfferDTO'
+              $ref: '#/components/schemas/OfferRequestDTO'
       responses:
         '201':
           description: Offer created successfully
@@ -105,6 +105,33 @@ paths:
       responses:
         '204':
           description: Offer deleted successfully
+
+    put:
+      operationId: updateOfferById
+      summary: Update an offer by ID
+      description: This operation update an offer by id
+      tags:
+        - offers
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OfferRequestDTO'
+      responses:
+        '200':
+          description: Offer updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OfferDTO'
         '404':
           description: Offer not found
           content:
@@ -114,7 +141,7 @@ paths:
 
 components:
   schemas:
-    OfferDTO:
+    OfferRequestDTO:
       type: object
       description: An Offer represents a promotional price or discount available for a specific product within a defined time period
       required:
@@ -127,11 +154,6 @@ components:
         - price
         - currencyIso
       properties:
-        offerId:
-          type: integer
-          format: int64
-          description: Unique identifier for the offer
-          example: 1
         brandId:
           type: integer
           format: int64
@@ -175,6 +197,18 @@ components:
           maxLength: 3
           pattern: "^[A-Z]{3}$"
           example: 'EUR'
+    OfferDTO:
+      allOf:
+        - $ref: '#/components/schemas/OfferRequestDTO'
+        - type: object
+          properties:
+            offerId:
+              type: integer
+              format: int64
+              description: Unique identifier for the offer
+              example: 1
+          required:
+            - offerId
     ErrorResponseDTO:
       type: object
       properties:

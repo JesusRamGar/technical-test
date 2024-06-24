@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface OfferRepository {
 
-  Offer createOffer(Offer offer);
+  Offer saveOffer(Offer offer);
 
   Optional<Offer> getOfferById(Long id);
 

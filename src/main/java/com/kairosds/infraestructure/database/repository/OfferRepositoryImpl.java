@@ -20,7 +20,7 @@ public class OfferRepositoryImpl implements OfferRepository {
 
   private final OfferEntityMapper offerEntityMapper;
 
-  public Offer createOffer(Offer offer) {
+  public Offer saveOffer(Offer offer) {
     return offerEntityMapper.toOffer(
         offerRepositoryJpa.save(offerEntityMapper.toOfferEntity(offer)));
   }

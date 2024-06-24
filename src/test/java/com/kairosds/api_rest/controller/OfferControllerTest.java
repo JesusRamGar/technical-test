@@ -11,12 +11,13 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kairosds.api_rest.error.ErrorHandlingController;
 import com.kairosds.api_rest.mapper.OfferMapper;
+import com.kairosds.api_rest.mapper.OfferRequestMapper;
 import com.kairosds.domain.exception.OfferNotFoundException;
 import com.kairosds.domain.model.Offer;
 import com.kairosds.domain.service.CreateOfferService;
 import com.kairosds.domain.service.DeleteOfferService;
 import com.kairosds.domain.service.GetOfferService;
-import com.kairosds.domain.usecase.DeleteOfferUseCase;
+import com.kairosds.domain.usecase.UpdateOfferUseCase;
 import java.math.BigDecimal;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,6 +28,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.openapitools.model.ErrorResponseDTO;
 import org.openapitools.model.OfferDTO;
+import org.openapitools.model.OfferRequestDTO;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -42,9 +44,11 @@ class OfferControllerTest {
 
   @Mock private DeleteOfferService deleteOfferService;
 
-  @Mock private DeleteOfferUseCase deleteOfferUseCase;
+  @Mock private UpdateOfferUseCase updateOfferUseCase;
 
   @Mock private OfferMapper offerMapper;
+
+  @Mock private OfferRequestMapper offerRequestMapper;
 
   @InjectMocks private OfferController offerController;
 
@@ -52,6 +56,7 @@ class OfferControllerTest {
 
   private Offer offer;
   private OfferDTO offerDTO;
+  private OfferRequestDTO offerRequestDTO;
 
   @BeforeEach
   void setUp() {
@@ -75,7 +80,17 @@ class OfferControllerTest {
 
     offerDTO =
         new OfferDTO()
-            .offerId(1L)
+            .brandId(1L)
+            .startDate("2020-06-14T00.00.00Z")
+            .endDate("2020-12-31T23.59.59Z")
+            .priceListId(1L)
+            .productPartNumber("000100233")
+            .priority(1)
+            .price(35.50)
+            .currencyIso("EUR");
+
+    offerRequestDTO =
+        new OfferRequestDTO()
             .brandId(1L)
             .startDate("2020-06-14T00.00.00Z")
             .endDate("2020-12-31T23.59.59Z")
@@ -88,7 +103,7 @@ class OfferControllerTest {
 
   @Test
   void testCreateOffer() throws Exception {
-    when(offerMapper.toOffer(any(OfferDTO.class))).thenReturn(offer);
+    when(offerRequestMapper.toOffer(any(OfferRequestDTO.class))).thenReturn(offer);
     when(createOfferService.createOffer(any(Offer.class))).thenReturn(offer);
     when(offerMapper.toOfferDTO(any(Offer.class))).thenReturn(offerDTO);
 
@@ -96,7 +111,7 @@ class OfferControllerTest {
         .perform(
             post("/offer")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(offerDTO)))
+                .content(objectMapper.writeValueAsString(offerRequestDTO)))
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$.offerId").value(offerDTO.getOfferId()));
@@ -163,27 +178,11 @@ class OfferControllerTest {
 
   @Test
   void testDeleteOfferById() throws Exception {
-    doNothing().when(deleteOfferUseCase).deleteOfferById(anyLong());
+    doNothing().when(deleteOfferService).deleteOfferById(anyLong());
 
     mockMvc.perform(delete("/offer/{id}", 1L)).andExpect(status().isNoContent());
 
-    verify(deleteOfferUseCase).deleteOfferById(1L);
-  }
-
-  @Test
-  void testDeleteOfferById_NotFound() throws Exception {
-    doThrow(new OfferNotFoundException("Offer with id N not found"))
-        .when(deleteOfferUseCase)
-        .deleteOfferById(anyLong());
-
-    MvcResult result =
-        mockMvc.perform(delete("/offer/{id}", 1L)).andExpect(status().isNotFound()).andReturn();
-
-    ErrorResponseDTO response =
-        objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {});
-
-    assertThat(response.getCode(), is(404));
-    assertThat(response.getDetail(), is("Offer with id N not found"));
+    verify(deleteOfferService).deleteOfferById(1L);
   }
 
   @Test
@@ -227,6 +226,47 @@ class OfferControllerTest {
 
     MvcResult result =
         mockMvc.perform(get("/offer/{id}", 1L)).andExpect(status().isNotFound()).andReturn();
+
+    ErrorResponseDTO response =
+        objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {});
+
+    assertThat(response.getCode(), is(404));
+    assertThat(response.getDetail(), is("Offer with id N not found"));
+  }
+
+  @Test
+  void testUpdateOfferById() throws Exception {
+    when(offerRequestMapper.toOffer(any(OfferRequestDTO.class))).thenReturn(offer);
+    when(updateOfferUseCase.updateOffer(anyLong(), any(Offer.class))).thenReturn(offer);
+    when(offerMapper.toOfferDTO(any(Offer.class))).thenReturn(offerDTO);
+
+    mockMvc
+        .perform(
+            put("/offer/{id}", 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(offerRequestDTO)))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+        .andExpect(jsonPath("$.offerId").value(offerDTO.getOfferId()));
+
+    verify(updateOfferUseCase).updateOffer(1L, offer);
+    verify(offerMapper).toOfferDTO(offer);
+  }
+
+  @Test
+  void testUpdateOfferById_NotFound() throws Exception {
+    doThrow(new OfferNotFoundException("Offer with id N not found"))
+        .when(updateOfferUseCase)
+        .updateOffer(anyLong(), any());
+
+    MvcResult result =
+        mockMvc
+            .perform(
+                put("/offer/{id}", 1L)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(offerRequestDTO)))
+            .andExpect(status().isNotFound())
+            .andReturn();
 
     ErrorResponseDTO response =
         objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {});

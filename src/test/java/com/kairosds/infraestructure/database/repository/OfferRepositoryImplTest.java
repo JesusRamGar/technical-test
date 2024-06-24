@@ -63,12 +63,12 @@ class OfferRepositoryImplTest {
   }
 
   @Test
-  void testCreateOffer_Success() {
+  void testSaveOffer_Success() {
     when(offerEntityMapper.toOfferEntity(any(Offer.class))).thenReturn(offerEntity);
     when(offerRepositoryJpa.save(any())).thenReturn(offerEntity);
     when(offerEntityMapper.toOffer(any(OfferEntity.class))).thenReturn(offer);
 
-    Offer createdOffer = offerRepository.createOffer(offer);
+    Offer createdOffer = offerRepository.saveOffer(offer);
 
     assertNotNull(createdOffer);
     assertEquals(offer.getOfferId(), createdOffer.getOfferId());

@@ -29,11 +29,11 @@ class CreateOfferServiceImplTest {
     Offer offerToCreate = generateOfferExample();
     Offer createdOffer = generateOfferExample();
 
-    when(offerRepository.createOffer(offerToCreate)).thenReturn(createdOffer);
+    when(offerRepository.saveOffer(offerToCreate)).thenReturn(createdOffer);
 
     Offer result = createOfferService.createOffer(offerToCreate);
 
-    verify(offerRepository).createOffer(offerToCreate);
+    verify(offerRepository).saveOffer(offerToCreate);
 
     assertEquals(createdOffer, result, "The returned offer must be the same as the one created");
   }
@@ -42,11 +42,11 @@ class CreateOfferServiceImplTest {
   void testCreateOffer_SuccessWithCaptor() {
     Offer offerToCreate = generateOfferExample();
 
-    when(offerRepository.createOffer(any(Offer.class))).thenReturn(offerToCreate);
+    when(offerRepository.saveOffer(any(Offer.class))).thenReturn(offerToCreate);
 
     Offer createdOffer = createOfferService.createOffer(offerToCreate);
 
-    verify(offerRepository, times(1)).createOffer(offerCaptor.capture());
+    verify(offerRepository, times(1)).saveOffer(offerCaptor.capture());
 
     Offer capturedOffer = offerCaptor.getValue();
 
