@@ -25,7 +25,7 @@ class OfferEntityMapperTest {
     OfferEntity offerEntity =
         OfferEntity.builder()
             .offerId(1L)
-            .brandId(1)
+            .brandId(1L)
             .startDate(Timestamp.valueOf("2020-06-14 00:00:00"))
             .endDate(Timestamp.valueOf("2020-12-31 23:59:59"))
             .priceListId(1L)
@@ -58,7 +58,7 @@ class OfferEntityMapperTest {
     Offer offer =
         Offer.builder()
             .offerId(1L)
-            .brandId(1)
+            .brandId(1L)
             .startDate("2020-06-14T00.00.00Z")
             .endDate("2020-12-31T23.59.59Z")
             .priceListId(1L)

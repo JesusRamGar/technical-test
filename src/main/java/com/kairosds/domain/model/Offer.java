@@ -15,7 +15,7 @@ public class Offer implements Serializable {
 
   private Long offerId;
 
-  private Integer brandId;
+  private Long brandId;
 
   private String startDate;
 

@@ -63,7 +63,7 @@ class OfferControllerTest {
     offer =
         Offer.builder()
             .offerId(1L)
-            .brandId(1)
+            .brandId(1L)
             .startDate("2020-06-14T00.00.00Z")
             .endDate("2020-12-31T23.59.59Z")
             .priceListId(1L)
@@ -76,7 +76,7 @@ class OfferControllerTest {
     offerDTO =
         new OfferDTO()
             .offerId(1L)
-            .brandId(1)
+            .brandId(1L)
             .startDate("2020-06-14T00.00.00Z")
             .endDate("2020-12-31T23.59.59Z")
             .priceListId(1L)
@@ -130,7 +130,7 @@ class OfferControllerTest {
   void testCreateOffer_BadRequest_ValidField() throws Exception {
     OfferDTO invalidOfferDTO =
         new OfferDTO()
-            .brandId(1)
+            .brandId(1L)
             .startDate("2020-06-14T00.00.00Z")
             .endDate("2020-12-31T23.59.59Z")
             .productPartNumber("0123456789");
@@ -149,7 +149,7 @@ class OfferControllerTest {
     assertThat(response.getCode(), is(400));
     assertThat(response.getDetail(), containsString("Validation failed"));
     assertThat(response.getDetail(), containsString("productPartNumber"));
-    assertThat(response.getDetail(), containsString("size must be between 0 and 9"));
+    assertThat(response.getDetail(), containsString("size must be between 9 and 9"));
   }
 
   @Test

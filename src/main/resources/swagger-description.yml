@@ -121,6 +121,11 @@ components:
         - brandId
         - startDate
         - endDate
+        - priceListId
+        - productPartNumber
+        - priority
+        - price
+        - currencyIso
       properties:
         offerId:
           type: integer
@@ -129,15 +134,18 @@ components:
           example: 1
         brandId:
           type: integer
+          format: int64
           description: Identifier for the brand associated with the offer
           example: 1
         startDate:
           type: string
           description: Start date of the offer
+          pattern: "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}\\.[0-9]{2}\\.[0-9]{2}Z$"
           example: '2020-06-14T00.00.00Z'
         endDate:
           type: string
           description: End date of the offer
+          pattern: "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}\\.[0-9]{2}\\.[0-9]{2}Z$"
           example: '2020-12-31T23.59.59Z'
         priceListId:
           type: integer
@@ -147,7 +155,9 @@ components:
         productPartNumber:
           type: string
           description: Unique identifier for the product associated with the offer
+          minLength: 9
           maxLength: 9
+          pattern: "^[0-9]{9}$"
           example: '000100233'
         priority:
           type: integer
@@ -161,7 +171,9 @@ components:
         currencyIso:
           type: string
           description: ISO currency code for the price of the offer
+          minLength: 3
           maxLength: 3
+          pattern: "^[A-Z]{3}$"
           example: 'EUR'
     ErrorResponseDTO:
       type: object

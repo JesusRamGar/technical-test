@@ -22,7 +22,7 @@ public class OfferEntity {
 
   @NotNull
   @Column(name = "BRAND_ID", nullable = false)
-  private Integer brandId;
+  private Long brandId;
 
   @NotNull
   @Column(name = "START_DATE", nullable = false)
@@ -32,24 +32,31 @@ public class OfferEntity {
   @Column(name = "END_DATE", nullable = false)
   private Timestamp endDate;
 
-  @Column(name = "PRICE_LIST")
+  @NotNull
+  @Column(name = "PRICE_LIST", nullable = false)
   private Long priceListId;
 
-  @Column(name = "SIZE")
+  @NotNull
+  @Column(name = "SIZE", nullable = false)
   private String size;
 
-  @Column(name = "MODEL")
+  @NotNull
+  @Column(name = "MODEL", nullable = false)
   private String model;
 
-  @Column(name = "QUALITY")
+  @NotNull
+  @Column(name = "QUALITY", nullable = false)
   private String quality;
 
-  @Column(name = "PRIORITY")
+  @NotNull
+  @Column(name = "PRIORITY", nullable = false)
   private Integer priority;
 
-  @Column(name = "PRICE")
+  @NotNull
+  @Column(name = "PRICE", nullable = false)
   private BigDecimal price;
 
-  @Column(name = "CURRENCY_ISO")
+  @NotNull
+  @Column(name = "CURRENCY_ISO", nullable = false)
   private String currencyIso;
 }
