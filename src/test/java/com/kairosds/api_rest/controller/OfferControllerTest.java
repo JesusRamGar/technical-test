@@ -143,18 +143,19 @@ class OfferControllerTest {
 
   @Test
   void testCreateOffer_BadRequest_ValidField() throws Exception {
-    OfferDTO invalidOfferDTO =
-        new OfferDTO()
+    OfferRequestDTO invalidOfferRequestDTO =
+        new OfferRequestDTO()
             .brandId(1L)
-            .startDate("2020-06-14T00.00.00Z")
-            .endDate("2020-12-31T23.59.59Z")
-            .productPartNumber("0123456789");
+            .startDate("2020-06-14T00.00Z")
+            .endDate("2020-12-31T23.59Z")
+            .productPartNumber("0123456789")
+            .currencyIso("ERROR");
     MvcResult result =
         mockMvc
             .perform(
                 post("/offer")
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(invalidOfferDTO)))
+                    .content(objectMapper.writeValueAsString(invalidOfferRequestDTO)))
             .andExpect(status().isBadRequest())
             .andReturn();
 
@@ -165,6 +166,18 @@ class OfferControllerTest {
     assertThat(response.getDetail(), containsString("Validation failed"));
     assertThat(response.getDetail(), containsString("productPartNumber"));
     assertThat(response.getDetail(), containsString("size must be between 9 and 9"));
+    assertThat(response.getDetail(), containsString("must match \"^[0-9]{9}$\""));
+
+    assertThat(response.getDetail(), containsString("currencyIso"));
+    assertThat(response.getDetail(), containsString("size must be between 3 and 3"));
+    assertThat(response.getDetail(), containsString("must match \"^[A-Z]{3}$\""));
+
+    assertThat(response.getDetail(), containsString("startDate"));
+    assertThat(response.getDetail(), containsString("endDate"));
+    assertThat(
+        response.getDetail(),
+        containsString(
+            "must match \"^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}\\.[0-9]{2}\\.[0-9]{2}Z$\""));
   }
 
   @Test
@@ -273,5 +286,44 @@ class OfferControllerTest {
 
     assertThat(response.getCode(), is(404));
     assertThat(response.getDetail(), is("Offer with id N not found"));
+  }
+
+  @Test
+  void testUpdateOfferById_BadRequest_ValidField() throws Exception {
+    OfferRequestDTO invalidOfferRequestDTO =
+        new OfferRequestDTO()
+            .brandId(1L)
+            .startDate("2020-06-14T00.00Z")
+            .endDate("2020-12-31T23.59Z")
+            .productPartNumber("0123456789")
+            .currencyIso("ERROR");
+    MvcResult result =
+        mockMvc
+            .perform(
+                put("/offer/{id}", 1L)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(invalidOfferRequestDTO)))
+            .andExpect(status().isBadRequest())
+            .andReturn();
+
+    ErrorResponseDTO response =
+        objectMapper.readValue(result.getResponse().getContentAsString(), new TypeReference<>() {});
+
+    assertThat(response.getCode(), is(400));
+    assertThat(response.getDetail(), containsString("Validation failed"));
+    assertThat(response.getDetail(), containsString("productPartNumber"));
+    assertThat(response.getDetail(), containsString("size must be between 9 and 9"));
+    assertThat(response.getDetail(), containsString("must match \"^[0-9]{9}$\""));
+
+    assertThat(response.getDetail(), containsString("currencyIso"));
+    assertThat(response.getDetail(), containsString("size must be between 3 and 3"));
+    assertThat(response.getDetail(), containsString("must match \"^[A-Z]{3}$\""));
+
+    assertThat(response.getDetail(), containsString("startDate"));
+    assertThat(response.getDetail(), containsString("endDate"));
+    assertThat(
+        response.getDetail(),
+        containsString(
+            "must match \"^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}\\.[0-9]{2}\\.[0-9]{2}Z$\""));
   }
 }
