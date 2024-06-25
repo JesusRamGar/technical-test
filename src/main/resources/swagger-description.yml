@@ -3,9 +3,15 @@ info:
   title: Offer API
   description: API for managing offers
   version: 1.0.0
+  contact:
+    name: Jesus Ramos
+    email: jesusramosgar@gmail.com
 tags:
   - name: offer
     description: Operations for managing offers
+
+servers:
+  - url: http://localhost:8080
 
 paths:
   /offer:
