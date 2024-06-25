@@ -103,7 +103,7 @@ The project is built following SOLID principles and using the following methodol
 
 ## API Documentation
 
-The API is documented using OpenAPI. The OpenAPI specification file is located at src/main/resources/openapi.yml.
+The API is documented using OpenAPI. The OpenAPI specification file is located at _src/main/resources/swagger-description.yml_.
 
 ## How to Run
 
