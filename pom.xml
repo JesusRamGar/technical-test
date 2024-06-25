@@ -131,7 +131,7 @@
 						</goals>
 						<configuration>
 							<skipValidateSpec>true</skipValidateSpec>
-							<inputSpec>./src/main/resources/swagger-description.yml</inputSpec>
+							<inputSpec>./src/main/resources/openapi.yml</inputSpec>
 							<output>${project.build.directory}/generated-sources/openapi</output>
 							<generatorName>spring</generatorName>
 							<configOptions>
