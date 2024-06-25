@@ -12,8 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.util.StringUtils;
-import org.springframework.web.HttpMediaTypeNotAcceptableException;
-import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
@@ -33,8 +31,6 @@ public class ErrorHandlingController {
   private static final String BAD_REQUEST_MESSAGE = "Bad request - {}";
   private static final String NOT_FOUND_MESSAGE = "Not found - {}";
   private static final String METHOD_NOT_ALLOWED_MESSAGE = "Method not allowed - {}";
-  private static final String UNSUPPORTED_MEDIA_TYPE_MESSAGE = "Unsupported media type - {}";
-  private static final String NOT_ACCEPTABLE_MESSAGE = "Not acceptable - {}";
 
   private ResponseEntity<ErrorResponseDTO> getResponse(
       HttpStatus status, Integer code, String message, String detail) {
@@ -87,18 +83,6 @@ public class ErrorHandlingController {
   public ResponseEntity<ErrorResponseDTO> methodNotAllowedExceptionHandler(Exception ex) {
     log.error(METHOD_NOT_ALLOWED_MESSAGE, ex.getMessage(), ex);
     return getResponse(HttpStatus.METHOD_NOT_ALLOWED, null, "", ex.getMessage());
-  }
-
-  @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
-  public ResponseEntity<ErrorResponseDTO> unsupportedMediaTypeHandler(Exception ex) {
-    log.error(UNSUPPORTED_MEDIA_TYPE_MESSAGE, ex.getMessage(), ex);
-    return getResponse(HttpStatus.UNSUPPORTED_MEDIA_TYPE, null, "", ex.getMessage());
-  }
-
-  @ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
-  public ResponseEntity<ErrorResponseDTO> notAcceptableHandler(Exception ex) {
-    log.error(NOT_ACCEPTABLE_MESSAGE, ex.getMessage(), ex);
-    return getResponse(HttpStatus.NOT_ACCEPTABLE, null, "", ex.getMessage());
   }
 
   // Offer Exceptions
