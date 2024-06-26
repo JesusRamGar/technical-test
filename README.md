@@ -27,7 +27,9 @@ The only peculiarity is that the `productPartNumber` in the database should be s
 Note that the Offer entity is not defined this way initially and can be changed. This data should be displayed in both input and output with this format:
 
 ```json
-"productPartNumber": "000100233"
+{
+  "productPartNumber": "000100233"
+}
 ```
 
 Evaluation criteria:
@@ -98,12 +100,12 @@ The project is built following SOLID principles and using the following methodol
   * _com.kairosds.application_: Contains the implementations of the use cases and services. 
   * _com.kairosds.infraestructure_: Contains infrastructure-related code, such as database and repository configurations. In this technical test it has not been necessary to implement external service clients.
 * _src/test/java_: Contains the test cases for the application. 
-* _src/main/resources_: Contains the application configuration files, including the 'application.properties' for Spring Boot and swagger-description.yml for the OpenAPI specification.
+* _src/main/resources_: Contains the application configuration files, including the `application.properties` for Spring Boot and `openapi.yml` for the OpenAPI specification.
 * _postman_: Contains the Postman collection for testing the API endpoints.
 
 ## API Documentation
 
-The API is documented using OpenAPI. The OpenAPI specification file is located at _src/main/resources/swagger-description.yml_.
+The API is documented using OpenAPI. The OpenAPI specification file (`openapi.yml`) is located at _src/main/resources/_.
 
 ## How to Run
 
@@ -138,7 +140,7 @@ A Postman collection is provided to facilitate testing the API endpoints. Follow
 1. Open Postman.
 2. Click on Import in the top left corner.
 3. Select the postman folder in the project directory.
-4. Import the collection file (_Technical_Test.postman_collection.json_).
+4. Import the collection file (`Technical_Test.postman_collection.json`).
 5. Run the requests in the collection to interact with the API.
 
 ## Notes
