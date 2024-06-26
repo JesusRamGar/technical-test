@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.kairosds.domain.model.Offer;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.time.format.DateTimeParseException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openapitools.model.OfferRequestDTO;
@@ -34,10 +37,12 @@ class OfferRequestMapperTest {
 
     assertNotNull(offer);
     assertEquals(offerRequestDTO.getBrandId(), offer.getBrandId());
-    assertEquals(offerRequestDTO.getStartDate(), offer.getStartDate());
-    assertEquals(offerRequestDTO.getEndDate(), offer.getEndDate());
+    assertEquals(Timestamp.valueOf("2020-06-14 00:00:00"), offer.getStartDate());
+    assertEquals(Timestamp.valueOf("2020-12-31 23:59:59"), offer.getEndDate());
     assertEquals(offerRequestDTO.getPriceListId(), offer.getPriceListId());
-    assertEquals(offerRequestDTO.getProductPartNumber(), offer.getProductPartNumber());
+    assertEquals("00", offer.getSize());
+    assertEquals("0100", offer.getModel());
+    assertEquals("233", offer.getQuality());
     assertEquals(offerRequestDTO.getPriority(), offer.getPriority());
     assertEquals(BigDecimal.valueOf(offerRequestDTO.getPrice()), offer.getPrice());
     assertEquals(offerRequestDTO.getCurrencyIso(), offer.getCurrencyIso());
@@ -53,9 +58,18 @@ class OfferRequestMapperTest {
     assertNull(offer.getStartDate());
     assertNull(offer.getEndDate());
     assertNull(offer.getPriceListId());
-    assertNull(offer.getProductPartNumber());
+    assertNull(offer.getSize());
+    assertNull(offer.getModel());
+    assertNull(offer.getQuality());
     assertNull(offer.getPriority());
     assertNull(offer.getPrice());
     assertNull(offer.getCurrencyIso());
+  }
+
+  @Test
+  void testAsTimestamp_InvalidDateFormat() {
+    String dateString = "2020-06-14T00-00-00Z";
+
+    Assertions.assertThrows(DateTimeParseException.class, () -> mapper.asTimestamp(dateString));
   }
 }

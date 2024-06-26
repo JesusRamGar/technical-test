@@ -2,6 +2,7 @@ package com.kairosds.domain.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import lombok.*;
 
 @Generated
@@ -17,13 +18,17 @@ public class Offer implements Serializable {
 
   private Long brandId;
 
-  private String startDate;
+  private Timestamp startDate;
 
-  private String endDate;
+  private Timestamp endDate;
 
   private Long priceListId;
 
-  private String productPartNumber;
+  private String size;
+
+  private String model;
+
+  private String quality;
 
   private Integer priority;
 

@@ -52,10 +52,12 @@ class OfferRepositoryImplTest {
         Offer.builder()
             .offerId(1L)
             .brandId(1L)
-            .startDate("2020-06-14T00.00.00Z")
-            .endDate("2020-12-31T23.59.59Z")
+            .startDate(Timestamp.valueOf("2020-06-14 00:00:00"))
+            .endDate(Timestamp.valueOf("2020-12-31 23:59:59"))
             .priceListId(1L)
-            .productPartNumber("000100233")
+            .size("00")
+            .model("0100")
+            .quality("233")
             .priority(1)
             .price(new BigDecimal("35.50"))
             .currencyIso("EUR")
@@ -72,7 +74,9 @@ class OfferRepositoryImplTest {
 
     assertNotNull(createdOffer);
     assertEquals(offer.getOfferId(), createdOffer.getOfferId());
-    assertEquals(offer.getProductPartNumber(), createdOffer.getProductPartNumber());
+    assertEquals(offer.getSize(), createdOffer.getSize());
+    assertEquals(offer.getModel(), createdOffer.getModel());
+    assertEquals(offer.getQuality(), createdOffer.getQuality());
 
     verify(offerEntityMapper, times(1)).toOfferEntity(any(Offer.class));
     verify(offerRepositoryJpa, times(1)).save(any());
@@ -88,7 +92,9 @@ class OfferRepositoryImplTest {
 
     assertTrue(retrievedOffer.isPresent());
     assertEquals(offer.getOfferId(), retrievedOffer.get().getOfferId());
-    assertEquals(offer.getProductPartNumber(), retrievedOffer.get().getProductPartNumber());
+    assertEquals(offer.getSize(), retrievedOffer.get().getSize());
+    assertEquals(offer.getModel(), retrievedOffer.get().getModel());
+    assertEquals(offer.getQuality(), retrievedOffer.get().getQuality());
 
     verify(offerRepositoryJpa, times(1)).findById(1L);
     verify(offerEntityMapper, times(1)).toOffer(any(OfferEntity.class));
@@ -116,7 +122,9 @@ class OfferRepositoryImplTest {
     assertNotNull(allOffers);
     assertEquals(1, allOffers.size());
     assertEquals(offer.getOfferId(), allOffers.get(0).getOfferId());
-    assertEquals(offer.getProductPartNumber(), allOffers.get(0).getProductPartNumber());
+    assertEquals(offer.getSize(), allOffers.get(0).getSize());
+    assertEquals(offer.getModel(), allOffers.get(0).getModel());
+    assertEquals(offer.getQuality(), allOffers.get(0).getQuality());
 
     verify(offerRepositoryJpa, times(1)).findAll();
     verify(offerEntityMapper, times(1)).toOffer(any(OfferEntity.class));

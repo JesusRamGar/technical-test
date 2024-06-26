@@ -7,6 +7,7 @@ import static org.mockito.Mockito.*;
 import com.kairosds.domain.model.Offer;
 import com.kairosds.domain.repository.OfferRepository;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -61,10 +62,12 @@ class CreateOfferServiceImplTest {
     return Offer.builder()
         .offerId(1L)
         .brandId(1L)
-        .startDate("2020-06-14T00.00.00Z")
-        .endDate("2020-12-31T23.59.59Z")
+        .startDate(Timestamp.valueOf("2020-06-14 00:00:00"))
+        .endDate(Timestamp.valueOf("2020-12-31 23:59:59"))
         .priceListId(1L)
-        .productPartNumber("000100233")
+        .size("00")
+        .model("0100")
+        .quality("233")
         .priority(1)
         .price(new BigDecimal("35.50"))
         .currencyIso("EUR")
