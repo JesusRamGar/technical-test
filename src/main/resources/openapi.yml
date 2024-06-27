@@ -117,7 +117,7 @@ paths:
       summary: Update an offer by ID
       description: This operation update an offer by id
       tags:
-        - offers
+        - offer
       parameters:
         - name: id
           in: path
